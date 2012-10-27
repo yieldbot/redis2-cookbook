@@ -18,9 +18,9 @@
 #
 include_recipe "runit"
 if node["redis2"]["install_from"] == "package"
-  include_recipe "redis::package"
+  include_recipe "redis2::package"
 else
-  include_recipe "redis::source"
+  include_recipe "redis2::source"
 end
 
 user node["redis2"]["user"] do
@@ -45,10 +45,4 @@ end
 directory node["redis2"]["log_dir"] do
   owner node["redis2"]["user"]
   mode "0750"
-end
-
-service "redis" do
-  service_name value_for_platform(:default => "redis", [:ubuntu, :debian] => {:default => "redis-server"})
-  action [:disable, :stop]
-  ignore_failure true
 end
