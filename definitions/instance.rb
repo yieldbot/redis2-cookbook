@@ -4,7 +4,8 @@ define :redis_instance, :port => nil, :data_dir => nil, :master => nil, :service
   include_recipe "redis2"
   instance_name = "redis_#{params[:name]}"
   # if no explicit replication role was defined, it's a master
-  node.default_unless["redis2"]["instances"][params[:name]]["replication"]["role"] = "master"
+  node.set["redis2"]["instances"][params[:name]]["replication"]["role"] = "master" \
+    unless node["redis2"]["instances"][params[:name]]["replication"]["role"]
 
   init_dir = value_for_platform([:debian, :ubuntu] => {:default => "/etc/init.d/"},
                               [:centos, :redhat] => {:default => "/etc/rc.d/init.d/"},
@@ -24,7 +25,10 @@ define :redis_instance, :port => nil, :data_dir => nil, :master => nil, :service
     node.set["redis2"]["instances"][params[:name]]["data_dir"] = conf["data_dir"]
     Chef::Log.warn "Changing data_dir for #{instance_name} because it shouldn't be default." 
   end
-  node.set_unless["redis2"]["instances"][params[:name]]["data_dir"] = conf["data_dir"]
+
+  # Set the data_dir attribute if it isn't already set
+  node.set_unless["redis2"]["instances"][params[:name]]["data_dir"] = conf["data_dir"] \
+    unless node["redis2"]["instances"][params[:name]]["data_dir"]
 
   if conf["vm"]["swap_file"].nil? or conf["vm"]["swap_file"] == node["redis2"]["instances"]["default"]["vm"]["swap_file"]
     conf["vm"]["swap_file"] = ::File.join(
@@ -35,7 +39,7 @@ define :redis_instance, :port => nil, :data_dir => nil, :master => nil, :service
 
   # the most common use case when using search is to use some attributes of the node object from the search,
   # probably the ipaddress and the port. So to avoid incorrect port in attributes:
-  node.default_unless["redis2"]["instances"][params[:name]]["port"] = conf["port"]
+  node.set_unless["redis2"]["instances"][params[:name]]["port"] = conf["port"] unless node["redis2"]["instances"][params[:name]]["port"]
   if params[:port] and \
      params[:port] != node["redis2"]["instances"][params[:name]]["port"]
      raise ::Chef::Exceptions::InvalidResourceSpecification, "#{instance_name} port specified in recipe doesn't match port in attributes. You should avoid setting the port attribute manually if you are setting it via the definition body, otherwise you may break search consistency."
