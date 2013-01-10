@@ -15,7 +15,7 @@ end
 
 url = node["redis2"]["source_url"]
 tarball = url.split("?").first.split("/").last
-script "unpack and make" do
+script "unpack and make redis" do
   cwd node["redis2"]["build_dir"]
   code <<EOS
   wget -O #{tarball} #{url}
