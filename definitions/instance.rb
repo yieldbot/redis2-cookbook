@@ -3,6 +3,7 @@ define :redis_instance, :port => nil, :data_dir => nil, :master => nil, :service
     if params[:name] == "default"
   include_recipe "redis2"
   instance_name = "redis_#{params[:name]}"
+  instance_log_dir = ::File.join(node['redis2']['log_dir'], params[:name])
   # if no explicit replication role was defined, it's a master
   begin
     node.set["redis2"]["instances"][params[:name]]["replication"]["role"] = "master" \
@@ -54,6 +55,11 @@ define :redis_instance, :port => nil, :data_dir => nil, :master => nil, :service
     mode "0750"
   end
 
+  directory instance_log_dir do
+    owner node['redis2']['user']
+    mode "0755"
+  end
+
   conf_vars = {
     :conf => conf,
     :instance_name => params[:name],
@@ -76,7 +82,8 @@ define :redis_instance, :port => nil, :data_dir => nil, :master => nil, :service
     options \
 	  :user => node["redis2"]["user"],
       :config_file => ::File.join(node["redis2"]["conf_dir"], "#{instance_name}.conf"),
-      :timeouts => uplevel_params[:service_timeouts]
+      :timeouts => uplevel_params[:service_timeouts],
+      :log_dir => instance_log_dir
   end
 
 end

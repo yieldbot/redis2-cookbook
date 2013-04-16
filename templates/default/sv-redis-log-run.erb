@@ -1,2 +1,2 @@
 #!/bin/sh
-exec svlogd -tt ./main
+exec chpst -u <%= @options[:user] %> svlogd <%= @options[:log_dir] %>
