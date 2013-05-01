@@ -35,13 +35,6 @@ define :redis_instance, :port => nil, :data_dir => nil, :master => nil, :service
   node.set_unless["redis2"]["instances"][params[:name]]["data_dir"] = conf["data_dir"] \
     unless node["redis2"]["instances"][params[:name]]["data_dir"]
 
-  if conf["vm"]["swap_file"].nil? or conf["vm"]["swap_file"] == node["redis2"]["instances"]["default"]["vm"]["swap_file"]
-    conf["vm"]["swap_file"] = ::File.join(
-      ::File.dirname(node["redis2"]["instances"]["default"]["vm"]["swap_file"]), "swap_#{params[:name]}")
-    node.set["redis2"]["instances"][params[:name]]["vm"]["swap_file"] = conf["vm"]["swap_file"]
-    Chef::Log.warn "Changing vm.swap_file for #{instance_name} because it shouldn't be default." 
-  end
-
   # the most common use case when using search is to use some attributes of the node object from the search,
   # probably the ipaddress and the port. So to avoid incorrect port in attributes:
   node.set_unless["redis2"]["instances"][params[:name]]["port"] = conf["port"] unless node["redis2"]["instances"][params[:name]]["port"]
