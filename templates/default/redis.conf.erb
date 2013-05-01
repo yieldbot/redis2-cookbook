@@ -90,7 +90,9 @@ databases <%= @conf["databases"] %>
 #   Note: you can disable saving at all commenting all the "save" lines.
 
 <% if @conf["bgsave"] %>
-save <%= @conf["bgsave"] %>
+<% @conf["bgsave"].each do |sv| %>
+save <%= sv %>
+<% end %>
 <% end %>
 
 # Compress string objects using LZF when dump .rdb databases?
