@@ -24,7 +24,7 @@ else
   include_recipe "redis2::source"
 end
 
-volume_dirs(:redis2) do
+volume_dirs('redis2.data') do
   type          :persistent
   selects       :single
 end
