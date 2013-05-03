@@ -23,6 +23,9 @@ define :redis_instance, :port => nil, :data_dir => nil, :master => nil, :service
     ) )
   conf.merge! :port => params[:port] if params[:port]
   conf.merge! :data_dir => params[:data_dir] if params[:data_dir]
+  if not conf["data_dir"]
+    conf["data_dir"] = node["redis2"]["data_dir"]
+  end
   if node["redis2"]["instances"][params[:name]].attribute?("bgsave")
     conf["bgsave"] = node["redis2"]["instances"][params[:name]]["bgsave"]
   end

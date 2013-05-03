@@ -24,13 +24,14 @@ else
   include_recipe "redis2::source"
 end
 
+daemon_user(:redis2) do
+  home node[:redis2][:data_dir]
+end
+
 volume_dirs('redis2.data') do
   type          :persistent
   selects       :single
-end
-
-daemon_user(:redis2) do
-  home node[:redis2][:data_dir]
+  path          "redis/data"
 end
 
 standard_dirs(:redis2) do
