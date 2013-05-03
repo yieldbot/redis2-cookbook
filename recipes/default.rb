@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+include_recipe "silverware"
 include_recipe "runit"
 if node["redis2"]["install_from"] == "package"
   include_recipe "redis2::package"
@@ -23,26 +24,15 @@ else
   include_recipe "redis2::source"
 end
 
-user node["redis2"]["user"] do
-  home node["redis2"]["data_dir"]
-  system true
+volume_dirs(:redis2) do
+  type          :persistent
+  selects       :single
 end
 
-directory node["redis2"]["instances"]["default"]["data_dir"] do
-  owner node["redis2"]["user"]
-  mode "0750"
-  recursive true
+daemon_user(:redis2) do
+  home node[:redis2][:data_dir]
 end
 
-directory node["redis2"]["conf_dir"]
-
-directory node["redis2"]["pid_dir"] do
-  owner node["redis2"]["user"]
-  mode "0750"
-  recursive true
-end
-
-directory node["redis2"]["log_dir"] do
-  owner node["redis2"]["user"]
-  mode "0750"
+standard_dirs(:redis2) do
+  directories   :conf_dir, :log_dir, :pid_dir
 end

@@ -28,8 +28,8 @@ define :redis_instance, :port => nil, :data_dir => nil, :master => nil, :service
   end
 
   # minimal checks to see data doesn't mix
-  if conf["data_dir"] == node["redis2"]["instances"]["default"]["data_dir"]
-    conf["data_dir"] = ::File.join(node["redis2"]["instances"]["default"]["data_dir"], params[:name])
+  if conf["data_dir"] == node["redis2"]["data_dir"]
+    conf["data_dir"] = ::File.join(node["redis2"]["data_dir"], params[:name])
     node.set["redis2"]["instances"][params[:name]]["data_dir"] = conf["data_dir"]
     Chef::Log.warn "Changing data_dir for #{instance_name} because it shouldn't be default." 
   end
