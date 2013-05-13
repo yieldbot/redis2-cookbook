@@ -1,6 +1,4 @@
 define :redis_instance, :port => nil, :data_dir => nil, :master => nil, :service_timeouts => Hash.new do
-  raise ::Chef::Exceptions::InvalidResourceSpecification, "redis instance name can't be \"default\"" \
-    if params[:name] == "default"
   include_recipe "redis2"
   instance_name = "redis_#{params[:name]}"
   instance_log_dir = ::File.join(node['redis2']['log_dir'], params[:name])
