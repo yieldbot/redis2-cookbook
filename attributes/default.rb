@@ -10,6 +10,7 @@ default["redis2"]["instances"]["default"]["bindaddress"] = "0.0.0.0"
 default["redis2"]["instances"]["default"]["port"] = "6379"
 default["redis2"]["instances"]["default"]["timeout"] = 300
 default["redis2"]["instances"]["default"]["loglevel"] = "notice"
+default["redis2"]["instances"]["default"]["logfile"] = "stdout"
 default["redis2"]["instances"]["default"]["syslog-enabled"] = "no"
 default["redis2"]["instances"]["default"]["syslog-ident"] = "redis"
 default["redis2"]["instances"]["default"]["syslog-facility"] = "USER"
