@@ -10,6 +10,7 @@ end
 
 remote_file ::File.join(node["redis2"]["build_dir"], ::File.basename(node["redis2"]["source_url"])) do
   source node["redis2"]["source_url"]
+  checksum node["redis2"]["source_checksum"] if node["redis2"]["source_checksum"]
   mode "0644"
 end
 
