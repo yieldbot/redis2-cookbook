@@ -1,4 +1,4 @@
 #!/bin/sh
 exec 2>&1
-<% unless node["redis2"]["ulimit"].nil? -%><%= "ulimit -n #{node["redis2"]["ulimit"]}" %><% end %>
+<% unless node["redis2"]["ulimit"].nil? -%><%= "ulimit -n #{node["redis2"]["ulimit"]}" %><% end -%>
 exec chpst -u <%= @options[:user] %> <%= node["redis2"]["deamon"] %> <%= @options[:config_file] %>
