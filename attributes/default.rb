@@ -5,6 +5,7 @@ default["redis2"]["pid_dir"] = "/var/run/redis"
 default["redis2"]["data_dir"] = nil # setup by volume_dirs
 default["redis2"]["user"] =     "redis"
 default["redis2"]["deamon"] = "redis-server"
+default["redis2"]["ulimit"] = nil
 default["redis2"]["instances"]["default"]["daemonize"] = "no"
 default["redis2"]["instances"]["default"]["bindaddress"] = "0.0.0.0"
 default["redis2"]["instances"]["default"]["port"] = "6379"
